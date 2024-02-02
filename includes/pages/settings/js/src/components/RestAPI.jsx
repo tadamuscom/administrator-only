@@ -6,7 +6,7 @@ function RestApi(props) {
         <>
             <HeadingTwo label='Rest API' />
             <FormGroup extraClass='tada-bottom-margin'>
-                <CheckBox label='Enable REST API Redirection' id='admon-rest-api' name='admin-rest-api' value={ (admon_settings.rest_api === 'true') } />
+                <CheckBox label='Enable REST API Redirection' id='admon-rest-api' name='admon-rest-api' value={ ( admon_settings.rest_api === 'true' ) } />
             </FormGroup>
             <FormGroup>
                 <Label htmlFor='admon-rest-api-link' label='Rest API Redirect URL' />

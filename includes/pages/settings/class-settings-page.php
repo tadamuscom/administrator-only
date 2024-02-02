@@ -61,13 +61,15 @@ if( ! class_exists( 'Settings_Page' ) ){
 				array(
 					'logo'              => ADMON_IMG . '/tadamus-logo.png',
 					'nonce'             => wp_create_nonce( 'admon_settings' ),
-					'front_end'         => get_option( 'admon_front_end' ),
-					'front_end_link'    => get_option( 'admon_front_end_link' ),
-					'rest_api'          => get_option( 'admon_front_end' ),
-					'rest_api_link'     => get_option( 'admon_front_end_link' ),
-					'excluded_pages'    => get_option( 'admon_excluded_pages' )
+					'front_end'         => esc_attr( get_option( 'admon_front_end' ) ),
+					'front_end_link'    => esc_attr( get_option( 'admon_front_end_link' ) ),
+					'rest_api'          => esc_attr( get_option( 'admon_rest_api' ) ),
+					'rest_api_link'     => esc_attr( get_option( 'admon_rest_api_link' ) ),
+					'excluded_pages'    => esc_attr( get_option( 'admon_excluded_pages' ) )
 				)
 			);
+
+			remove_all_actions( 'admin_notices' );
 
 			echo '<div id="settings-root"></div>';
 		}

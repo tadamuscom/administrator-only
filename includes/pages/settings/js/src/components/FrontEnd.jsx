@@ -6,7 +6,7 @@ function FrontEnd( props ) {
         <>
             <HeadingTwo label='Front End' />
             <FormGroup extraClass='tada-bottom-margin'>
-                <CheckBox label='Enable Front-End Redirection' id='admon-front-end' name='admon-front-end' value={ (admon_settings.front_end === 'true') } />
+                <CheckBox label='Enable Front-End Redirection' id='admon-front-end' name='admon-front-end' value={ ( admon_settings.front_end === 'true' ) } />
             </FormGroup>
             <FormGroup>
                 <Label htmlFor='admon-front-end-link' label='Front-End Redirect URL' />

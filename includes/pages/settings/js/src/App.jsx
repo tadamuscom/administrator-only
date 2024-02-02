@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, HeadingTwo, resetForm, triggerError } from '@tadamus/wpui';
+import { Header, resetForm, triggerError } from '@tadamus/wpui';
 import SettingsForm from "./components/SettingsForm";
 
 function App( props ) {
@@ -12,17 +12,32 @@ function App( props ) {
 
         resetForm( e.target );
 
-        const formData = new FormData( e.target );
-        const frontEnd = formData.get( 'tada-status' );
+        const formData= new FormData( e.target );
+        const frontEnd          = formData.get( 'admon-front-end' );
+        const frontEndLink      = formData.get( 'admon-front-end-link' );
+        const restApi           = formData.get( 'admon-rest-api' );
+        const restApiLink       = formData.get( 'admon-rest-api-link' );
+        const excludedPages     = formData.get( 'admon-excluded-pages' );
 
         let go = true;
 
-        const status                   = document.getElementById( 'tada-status' );
-        const frontEndElement          = document.getElementById( 'admon-front-end' );
-        const frontEndLinkElement      = document.getElementById( 'admon-front-end-link' );
-        const restApiElement           = document.getElementById( 'admon-rest-api' );
-        const restApiLinkElement       = document.getElementById( 'admon-rest-api-link' );
-        const excludedPagesElement     = document.getElementById( 'admon-excluded-pages' );
+        const status = document.getElementById( 'tada-status' );
+
+        if( frontEnd ){
+            if( frontEndLink.length < 1 ){
+                triggerError( 'admon-front-end-link', 'The redirection link field cannot be empty' );
+
+                go = false;
+            }
+        }
+
+        if( restApi ){
+            if( restApiLink.length < 1 ){
+                triggerError( 'admon-rest-api-link', 'The redirection link field cannot be empty' );
+
+                go = false;
+            }
+        }
 
         if( ! go ) {
             btn.value = 'Save Settings';
@@ -43,6 +58,11 @@ function App( props ) {
             method: 'POST',
             data:{
                 nonce: admon_settings.nonce,
+                front_end: frontEnd,
+                front_end_link: frontEndLink,
+                rest_api: restApi,
+                rest_api_link: restApiLink,
+                excluded_pages: excludedPages
             }
         } ).then( ( result ) => {
             btn.value = 'Save Settings';
