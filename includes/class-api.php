@@ -7,6 +7,8 @@
 
 namespace Admon\Includes;
 
+use WP_REST_Request;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -49,8 +51,28 @@ if ( ! class_exists( 'API' ) ) {
 			);
 		}
 
-		public function save_settings(): void {
-			wp_send_json_error( 'error one' );
+		/**
+		 * Save the settings
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param WP_REST_Request $request The request object.
+		 *
+		 * @return void
+		 * @throws \Exception A regular exception.
+		 */
+		public function save_settings( WP_REST_Request $request ): void {
+			$params = $request->get_params();
+
+			if ( ! empty( $params['nonce'] ) && wp_verify_nonce( $params['nonce'], 'admon_settings' ) ) {
+
+
+				wp_send_json_success(
+					array(
+						'message' => __( 'Settings Saved!', 'licensehub' ),
+					)
+				);
+			}
 		}
 	}
 

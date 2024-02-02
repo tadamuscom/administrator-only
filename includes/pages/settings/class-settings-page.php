@@ -13,15 +13,35 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if( ! class_exists( 'Settings_Page' ) ){
+	/**
+	 * Handle the settings page
+	 */
 	class Settings_Page{
+		/**
+		 * Construct the object
+		 */
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'menu_callback' ) );
 		}
 
+		/**
+		 * Add the menu page
+		 *
+		 * @since 1.0.0
+		 *
+		 * @return void
+		 */
 		public function menu_callback() : void {
 			add_management_page( 'Administrator Only', 'Administrator Only', 'manage_options', 'administrator-only', array( $this, 'page_callback' ) );
 		}
 
+		/**
+		 * Add the interface for the settings page
+		 *
+		 * @since 1.0.0
+		 *
+		 * @return void
+		 */
 		public function page_callback() : void {
 			wp_enqueue_style( 'admon-settings-page', ADMON_CSS . '/admin/main.css', array(), ADMON_VERSION );
 			wp_enqueue_script(
@@ -39,8 +59,13 @@ if( ! class_exists( 'Settings_Page' ) ){
 				'admon-settings-page',
 				'admon_settings',
 				array(
-					'logo'  => ADMON_IMG . '/tadamus-logo.png',
-					'nonce' => wp_create_nonce( 'admon_settings' )
+					'logo'              => ADMON_IMG . '/tadamus-logo.png',
+					'nonce'             => wp_create_nonce( 'admon_settings' ),
+					'front_end'         => get_option( 'admon_front_end' ),
+					'front_end_link'    => get_option( 'admon_front_end_link' ),
+					'rest_api'          => get_option( 'admon_front_end' ),
+					'rest_api_link'     => get_option( 'admon_front_end_link' ),
+					'excluded_pages'    => get_option( 'admon_excluded_pages' )
 				)
 			);
 

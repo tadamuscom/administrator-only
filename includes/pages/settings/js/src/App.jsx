@@ -13,10 +13,16 @@ function App( props ) {
         resetForm( e.target );
 
         const formData = new FormData( e.target );
+        const frontEnd = formData.get( 'tada-status' );
 
         let go = true;
 
-        const status = document.getElementById( 'tada-status' );
+        const status                   = document.getElementById( 'tada-status' );
+        const frontEndElement          = document.getElementById( 'admon-front-end' );
+        const frontEndLinkElement      = document.getElementById( 'admon-front-end-link' );
+        const restApiElement           = document.getElementById( 'admon-rest-api' );
+        const restApiLinkElement       = document.getElementById( 'admon-rest-api-link' );
+        const excludedPagesElement     = document.getElementById( 'admon-excluded-pages' );
 
         if( ! go ) {
             btn.value = 'Save Settings';
