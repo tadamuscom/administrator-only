@@ -21,8 +21,46 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
+namespace Admon;
+
+define( 'ADMON_VERSION', '1.0.0' );
+
+if ( ! defined( 'ADMON_SLUG' ) ) {
+	define( 'ADMON_SLUG', 'administrator-only' );
+}
+
+if ( ! defined( 'ADMON_PATH' ) ) {
+	define( 'ADMON_PATH', WP_PLUGIN_DIR . '/' . ADMON_SLUG );
+}
+
+if ( ! defined( 'ADMON_INC' ) ) {
+	define( 'ADMON_INC', ADMON_PATH . '/includes' );
+}
+
+if ( ! defined( 'ADMON_URL' ) ){
+	define( 'ADMON_URL', plugin_dir_url( __FILE__ ) );
+}
+
+if ( ! defined( 'ADMON_PAGE' ) ) {
+	define( 'ADMON_PAGES', ADMON_URL . 'includes/pages' );
+}
+
+if ( ! defined( 'ADMON_ASSET' ) ) {
+	define( 'ADMON_ASSET', ADMON_URL . '/assets' );
+}
+
+if ( ! defined( 'ADMON_CSS' ) ) {
+	define( 'ADMON_CSS', ADMON_ASSET . '/css' );
+}
+
+if ( ! defined( 'ADMON_IMG' ) ) {
+	define( 'ADMON_IMG', ADMON_ASSET . '/img' );
+}
+
 class Administrator_Only{
 	public function __construct() {
+		require_once ADMON_INC . '/class-loader.php';
+
 		add_action( 'template_redirect',  array( $this, 'check_for_access' ));
 	}
 
