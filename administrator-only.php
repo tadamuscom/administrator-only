@@ -60,22 +60,6 @@ if ( ! defined( 'ADMON_IMG' ) ) {
 class Administrator_Only{
 	public function __construct() {
 		require_once ADMON_INC . '/class-loader.php';
-
-		add_action( 'template_redirect',  array( $this, 'check_for_access' ));
-	}
-
-	public function check_for_access() : void {
-		$allowed_pages = array(
-			'wp-login.php',
-			'wp-admin'
-		);
-
-		if ( ! in_array( $GLOBALS['pagenow'], $allowed_pages ) && ! defined( 'REST_REQUEST' )  )  {
-			if( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ){
-				wp_redirect( 'https://tadamus.com' );
-				exit;
-			}
-		}
 	}
 }
 

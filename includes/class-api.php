@@ -127,7 +127,28 @@ if ( ! class_exists( 'API' ) ) {
 
 				admon_maybe_add_option( 'admon_front_end_link', $front_end_link );
 				admon_maybe_add_option( 'admon_rest_api_link', $rest_api_link );
-				admon_maybe_add_option( 'admon_excluded_pages', $excluded_pages );
+
+				if( ! empty( $excluded_pages ) ){
+					$pages = array( $excluded_pages );
+
+					if( str_contains( $excluded_pages, ',' ) ){
+						$pages = explode( ',', trim( $excluded_pages ) );
+					}
+
+					foreach( $pages as $page ){
+						if( ! get_post( $page ) ){
+							wp_send_json_error(
+								array(
+									'message' => printf( __( 'There is no page with the ID of %s', 'administrator-only' ), $page ),
+								)
+							);
+						}
+					}
+
+					admon_maybe_add_option( 'admon_excluded_pages', wp_json_encode( $pages ) );
+				}else{
+					admon_maybe_add_option( 'admon_excluded_pages', $excluded_pages );
+				}
 
 				wp_send_json_success(
 					array(
