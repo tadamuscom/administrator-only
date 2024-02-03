@@ -55,6 +55,9 @@ if( ! class_exists( 'Settings_Page' ) ){
 				ADMON_VERSION
 			);
 
+			$excluded_pages = $this->get_excluded( get_option( 'admon_excluded_pages' ) );
+			$excluded_routes = $this->get_excluded( get_option( 'admon_excluded_routes' ) );
+
 			wp_localize_script(
 				'admon-settings-page',
 				'admon_settings',
@@ -63,15 +66,37 @@ if( ! class_exists( 'Settings_Page' ) ){
 					'nonce'             => wp_create_nonce( 'admon_settings' ),
 					'front_end'         => esc_attr( get_option( 'admon_front_end' ) ),
 					'front_end_link'    => esc_attr( get_option( 'admon_front_end_link' ) ),
+					'excluded_pages'    => $excluded_pages,
 					'rest_api'          => esc_attr( get_option( 'admon_rest_api' ) ),
 					'rest_api_link'     => esc_attr( get_option( 'admon_rest_api_link' ) ),
-					'excluded_pages'    => esc_attr( get_option( 'admon_excluded_pages' ) )
+					'excluded_routes'   => $excluded_routes,
+					'delete_data'       => esc_attr( get_option( 'admon_delete_data' ) )
 				)
 			);
 
 			remove_all_actions( 'admin_notices' );
 
 			echo '<div id="settings-root"></div>';
+		}
+
+		/**
+		 * Retrieve the excluded pages and format them in a string separated by commas
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param mixed $option
+		 *
+		 * @return string
+		 */
+		private function get_excluded( mixed $option ): string {
+			$excluded_pages = '';
+
+			if( $option ){
+				$array_excluded_pages = json_decode( $option, true );
+				$excluded_pages = implode( ',', $array_excluded_pages );
+			}
+
+			return $excluded_pages;
 		}
 	}
 
