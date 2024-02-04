@@ -153,6 +153,15 @@ if ( ! class_exists( 'API' ) ) {
 					admon_maybe_add_option( 'admon_delete_data', 'false' );
 				}
 
+				/**
+				 * Runs after the settings are saved
+				 *
+				 * It runs after the settings were saved.
+				 *
+				 * @since 1.0.0
+				 */
+				do_action( 'admon_saved_settings' );
+
 				wp_send_json_success(
 					array(
 						'message' => __( 'Settings Saved!', 'licensehub' ),
@@ -173,11 +182,31 @@ if ( ! class_exists( 'API' ) ) {
 		 * @return string[]
 		 */
 		private function set_excluded( string $value ): array {
+			/**
+			 * Run before the excluded pages setup
+			 *
+			 * Run before the pages array gets created.
+			 *
+			 * @since 1.0.0
+			 */
+			do_action( 'admon_before_set_excluded_pages' );
+
 			$pages = array( $value );
 
 			if( str_contains( $value, ',' ) ){
 				$pages = explode( ',', trim( $value ) );
 			}
+
+			/**
+			 * Run after the excluded pages setup
+			 *
+			 * Run after the pages array was created. But before the array is saved to the database
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $pages Name of the option to update.
+			 */
+			do_action( 'admon_after_set_excluded_pages', array( $pages ) );
 
 			return $pages;
 		}

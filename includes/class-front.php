@@ -30,6 +30,15 @@ if( ! class_exists( 'Front' ) ){
 			$allowed_pages = $this->get_allowed_pages();
 
 			if( $this->is_setting_enabled() ){
+				/**
+				 * Before front end redirection
+				 *
+				 * Run before the front end redirection
+				 *
+				 * @since 1.0.0
+				 */
+				do_action( 'admon_before_front_redirection' );
+
 				if ( ! in_array( $GLOBALS['pagenow'], $allowed_pages ) && ! defined( 'REST_REQUEST' )  )  {
 					if( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ){
 						wp_redirect( get_option( 'admon_front_end_link' ) );

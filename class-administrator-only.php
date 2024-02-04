@@ -9,10 +9,10 @@
  *
  * @administrator-only
  * Plugin Name:       Administrator Only
- * Plugin URI:        https://tadamus.com/products/administrator-only
- * Description:       A very lightweight utility plugin that makes your site private to anyone but logged-in administrators. The only page that remains available to the public is the login page.
+ * Plugin URI:        https://github.com/tadamuscom/administrator-only
+ * Description:       A very lightweight utility plugin that makes your site private to anyone but logged-in administrators. The only pages that remain available to the public are the login page and any other page of your choosing.
  * Version:           1.0.0
- * Requires at least: 5.2
+ * Requires at least: 6.2
  * Requires PHP:      8.0
  * Author:            Tadamus
  * Author URI:        https://tadamus.com
@@ -60,6 +60,35 @@ if ( ! defined( 'ADMON_IMG' ) ) {
 class Administrator_Only{
 	public function __construct() {
 		require_once ADMON_INC . '/class-loader.php';
+
+		add_action( 'deactivate_' . ADMON_SLUG . '/class-' . ADMON_SLUG . '.php', array( $this, 'deactivate' ) );
+	}
+
+	/**
+	 * Run actions on deactivation
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function deactivate(): void {
+		if ( 'true' === get_option( 'admon_delete_data' ) ){
+			delete_option( 'admon_front_end' );
+			delete_option( 'admon_front_end_link' );
+			delete_option( 'admon_rest_api' );
+			delete_option( 'admon_rest_api_link' );
+			delete_option( 'admon_excluded_pages' );
+			delete_option( 'admon_delete_data' );
+		}
+
+		/**
+		 * Deactivation hook.
+		 *
+		 * Runs when the plugin gets deactivated after the default code for the deactivation.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'admon_deactivation' );
 	}
 }
 

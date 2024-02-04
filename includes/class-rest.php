@@ -34,6 +34,15 @@ if ( ! class_exists( 'Rest' ) ) {
 		 */
 		public function check_for_access(): void {
 			if( $this->is_setting_enabled() ){
+				/**
+				 * Before REST API redirection
+				 *
+				 * Run before the REST API redirection
+				 *
+				 * @since 1.0.0
+				 */
+				do_action( 'admon_before_rest_redirection' );
+
 				if( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ){
 					wp_redirect( get_option( 'admon_rest_api_link' ) );
 					exit;
