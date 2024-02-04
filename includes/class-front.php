@@ -71,8 +71,6 @@ if( ! class_exists( 'Front' ) ){
 
 			$setting = get_option( 'admon_excluded_pages' );
 
-			var_dump( $setting );
-
 			if( ! empty( $setting ) ){
 				$pages = json_decode( $setting );
 

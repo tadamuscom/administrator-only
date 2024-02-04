@@ -69,7 +69,6 @@ if( ! class_exists( 'Settings_Page' ) ){
 					'excluded_pages'    => $excluded_pages,
 					'rest_api'          => esc_attr( get_option( 'admon_rest_api' ) ),
 					'rest_api_link'     => esc_attr( get_option( 'admon_rest_api_link' ) ),
-					'excluded_routes'   => $excluded_routes,
 					'delete_data'       => esc_attr( get_option( 'admon_delete_data' ) )
 				)
 			);

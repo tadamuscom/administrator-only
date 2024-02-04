@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'API' ) ) {
 	/**
-	 * Responsible to load all the files in the plugin
+	 * Handle all the API actions
 	 */
 	class API {
 		/**
@@ -72,6 +72,7 @@ if ( ! class_exists( 'API' ) ) {
 				$rest_api           = sanitize_text_field( $params['rest_api'] );
 				$rest_api_link      = sanitize_text_field( $params['rest_api_link'] );
 				$excluded_pages     = sanitize_text_field( $params['excluded_pages'] );
+				$delete_all         = sanitize_text_field( $params['delete_all'] );
 
 				if ( $front_end === 'on' ){
 					if( empty( $front_end_link ) ){
@@ -99,7 +100,7 @@ if ( ! class_exists( 'API' ) ) {
 					admon_maybe_add_option( 'admon_front_end', 'false' );
 				}
 
-				if ( $rest_api === 'on' ){
+				if ( 'on' === $rest_api ){
 					if( empty( $rest_api_link ) ){
 						wp_send_json_error(
 							array(
@@ -129,11 +130,7 @@ if ( ! class_exists( 'API' ) ) {
 				admon_maybe_add_option( 'admon_rest_api_link', $rest_api_link );
 
 				if( ! empty( $excluded_pages ) ){
-					$pages = array( $excluded_pages );
-
-					if( str_contains( $excluded_pages, ',' ) ){
-						$pages = explode( ',', trim( $excluded_pages ) );
-					}
+					$pages = $this->set_excluded( $excluded_pages );
 
 					foreach( $pages as $page ){
 						if( ! get_post( $page ) ){
@@ -150,6 +147,12 @@ if ( ! class_exists( 'API' ) ) {
 					admon_maybe_add_option( 'admon_excluded_pages', $excluded_pages );
 				}
 
+				if( 'on' === $delete_all ){
+					admon_maybe_add_option( 'admon_delete_data', 'true' );
+				}else{
+					admon_maybe_add_option( 'admon_delete_data', 'false' );
+				}
+
 				wp_send_json_success(
 					array(
 						'message' => __( 'Settings Saved!', 'licensehub' ),
@@ -158,6 +161,25 @@ if ( ! class_exists( 'API' ) ) {
 
 				exit;
 			}
+		}
+
+		/**
+		 * Sets the array of pages
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $value
+		 *
+		 * @return string[]
+		 */
+		private function set_excluded( string $value ): array {
+			$pages = array( $value );
+
+			if( str_contains( $value, ',' ) ){
+				$pages = explode( ',', trim( $value ) );
+			}
+
+			return $pages;
 		}
 	}
 

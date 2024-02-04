@@ -18,6 +18,7 @@ function App( props ) {
         const restApi           = formData.get( 'admon-rest-api' );
         const restApiLink       = formData.get( 'admon-rest-api-link' );
         const excludedPages     = formData.get( 'admon-excluded-pages' );
+        const deleteAll         = formData.get( 'admon-delete-data' );
 
         let go = true;
 
@@ -60,9 +61,10 @@ function App( props ) {
                 nonce: admon_settings.nonce,
                 front_end: frontEnd,
                 front_end_link: frontEndLink,
+                excluded_pages: excludedPages,
                 rest_api: restApi,
                 rest_api_link: restApiLink,
-                excluded_pages: excludedPages
+                delete_all: deleteAll
             }
         } ).then( ( result ) => {
             btn.value = 'Save Settings';
