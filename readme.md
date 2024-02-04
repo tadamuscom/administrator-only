@@ -6,7 +6,7 @@ Tested up to: 6.4
 Requires PHP: 8.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-Stable tag: 1.0
+Stable tag: 1.0.0
 
 Enable redirects for your front end pages or your REST API routes with a few clicks. 
 
