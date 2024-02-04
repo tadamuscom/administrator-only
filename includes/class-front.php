@@ -7,16 +7,16 @@
 
 namespace Admon\Includes;
 
-if( ! class_exists( 'Front' ) ){
+if ( ! class_exists( 'Front' ) ) {
 	/**
 	 * Handles the protection on the front end pages
 	 */
-	class Front{
+	class Front {
 		/**
 		 * Construct the class
 		 */
 		public function __construct() {
-			add_action( 'template_redirect',  array( $this, 'check_for_access' ));
+			add_action( 'template_redirect', array( $this, 'check_for_access' ) );
 		}
 
 		/**
@@ -26,10 +26,10 @@ if( ! class_exists( 'Front' ) ){
 		 *
 		 * @return void
 		 */
-		public function check_for_access() : void {
+		public function check_for_access(): void {
 			$allowed_pages = $this->get_allowed_pages();
 
-			if( $this->is_setting_enabled() ){
+			if ( $this->is_setting_enabled() ) {
 				/**
 				 * Before front end redirection
 				 *
@@ -39,8 +39,8 @@ if( ! class_exists( 'Front' ) ){
 				 */
 				do_action( 'admon_before_front_redirection' );
 
-				if ( ! in_array( $GLOBALS['pagenow'], $allowed_pages ) && ! defined( 'REST_REQUEST' )  )  {
-					if( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ){
+				if ( ! in_array( $GLOBALS['pagenow'], $allowed_pages, true ) && ! defined( 'REST_REQUEST' ) ) {
+					if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
 						wp_redirect( get_option( 'admon_front_end_link' ) );
 						exit;
 					}
@@ -58,7 +58,7 @@ if( ! class_exists( 'Front' ) ){
 		private function is_setting_enabled(): bool {
 			$setting = get_option( 'admon_front_end' );
 
-			if( 'true' === $setting ){
+			if ( 'true' === $setting ) {
 				return true;
 			}
 
@@ -75,18 +75,18 @@ if( ! class_exists( 'Front' ) ){
 		private function get_allowed_pages(): array {
 			$allowed_pages = array(
 				'wp-login.php',
-				'wp-admin'
+				'wp-admin',
 			);
 
 			$setting = get_option( 'admon_excluded_pages' );
 
-			if( ! empty( $setting ) ){
+			if ( ! empty( $setting ) ) {
 				$pages = json_decode( $setting );
 
-				foreach( $pages as $page ){
+				foreach ( $pages as $page ) {
 					$permalink = get_permalink( $page );
 
-					if( $permalink ){
+					if ( $permalink ) {
 						$allowed_pages[] = $permalink;
 					}
 				}

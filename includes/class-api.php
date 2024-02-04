@@ -25,6 +25,9 @@ if ( ! class_exists( 'API' ) ) {
 		 */
 		private string $namespace = 'tadamus/admon/v1';
 
+		/**
+		 * Construct the object
+		 */
 		public function __construct() {
 			add_action( 'rest_api_init', array( $this, 'api_routes' ) );
 		}
@@ -67,15 +70,15 @@ if ( ! class_exists( 'API' ) ) {
 			$nonce = sanitize_text_field( $params['nonce'] );
 
 			if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'admon_settings' ) ) {
-				$front_end          = sanitize_text_field( $params['front_end'] );
-				$front_end_link     = sanitize_text_field( $params['front_end_link'] );
-				$rest_api           = sanitize_text_field( $params['rest_api'] );
-				$rest_api_link      = sanitize_text_field( $params['rest_api_link'] );
-				$excluded_pages     = sanitize_text_field( $params['excluded_pages'] );
-				$delete_all         = sanitize_text_field( $params['delete_all'] );
+				$front_end      = sanitize_text_field( $params['front_end'] );
+				$front_end_link = sanitize_text_field( $params['front_end_link'] );
+				$rest_api       = sanitize_text_field( $params['rest_api'] );
+				$rest_api_link  = sanitize_text_field( $params['rest_api_link'] );
+				$excluded_pages = sanitize_text_field( $params['excluded_pages'] );
+				$delete_all     = sanitize_text_field( $params['delete_all'] );
 
-				if ( $front_end === 'on' ){
-					if( empty( $front_end_link ) ){
+				if ( 'on' === $front_end ) {
+					if ( empty( $front_end_link ) ) {
 						wp_send_json_error(
 							array(
 								'message' => __( 'The redirection link field cannot be empty', 'administrator-only' ),
@@ -85,7 +88,7 @@ if ( ! class_exists( 'API' ) ) {
 						exit;
 					}
 
-					if( ! str_contains( $front_end_link, 'http' ) ){
+					if ( ! str_contains( $front_end_link, 'http' ) ) {
 						wp_send_json_error(
 							array(
 								'message' => __( 'The redirection address must be a valid link', 'administrator-only' ),
@@ -96,12 +99,12 @@ if ( ! class_exists( 'API' ) ) {
 					}
 
 					admon_maybe_add_option( 'admon_front_end', 'true' );
-				}else{
+				} else {
 					admon_maybe_add_option( 'admon_front_end', 'false' );
 				}
 
-				if ( 'on' === $rest_api ){
-					if( empty( $rest_api_link ) ){
+				if ( 'on' === $rest_api ) {
+					if ( empty( $rest_api_link ) ) {
 						wp_send_json_error(
 							array(
 								'message' => __( 'The redirection link field cannot be empty', 'administrator-only' ),
@@ -111,7 +114,7 @@ if ( ! class_exists( 'API' ) ) {
 						exit;
 					}
 
-					if( ! str_contains( $rest_api_link, 'http' ) ){
+					if ( ! str_contains( $rest_api_link, 'http' ) ) {
 						wp_send_json_error(
 							array(
 								'message' => __( 'The redirection address must be a valid link', 'administrator-only' ),
@@ -122,34 +125,37 @@ if ( ! class_exists( 'API' ) ) {
 					}
 
 					admon_maybe_add_option( 'admon_rest_api', 'true' );
-				}else{
+				} else {
 					admon_maybe_add_option( 'admon_rest_api', 'false' );
 				}
 
 				admon_maybe_add_option( 'admon_front_end_link', $front_end_link );
 				admon_maybe_add_option( 'admon_rest_api_link', $rest_api_link );
 
-				if( ! empty( $excluded_pages ) ){
+				if ( ! empty( $excluded_pages ) ) {
 					$pages = $this->set_excluded( $excluded_pages );
 
-					foreach( $pages as $page ){
-						if( ! get_post( $page ) ){
+					foreach ( $pages as $page ) {
+						if ( ! get_post( $page ) ) {
+							// translators: The ID of the page that doesn't exist.
+							$message = printf( esc_attr__( 'There is no page with the ID of %s', 'administrator-only' ), esc_attr( $page ) );
+
 							wp_send_json_error(
 								array(
-									'message' => printf( __( 'There is no page with the ID of %s', 'administrator-only' ), $page ),
+									'message' => $message,
 								)
 							);
 						}
 					}
 
 					admon_maybe_add_option( 'admon_excluded_pages', wp_json_encode( $pages ) );
-				}else{
+				} else {
 					admon_maybe_add_option( 'admon_excluded_pages', $excluded_pages );
 				}
 
-				if( 'on' === $delete_all ){
+				if ( 'on' === $delete_all ) {
 					admon_maybe_add_option( 'admon_delete_data', 'true' );
-				}else{
+				} else {
 					admon_maybe_add_option( 'admon_delete_data', 'false' );
 				}
 
@@ -177,7 +183,7 @@ if ( ! class_exists( 'API' ) ) {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $value
+		 * @param string $value The value of the WordPress Option that holds the pages.
 		 *
 		 * @return string[]
 		 */
@@ -193,7 +199,7 @@ if ( ! class_exists( 'API' ) ) {
 
 			$pages = array( $value );
 
-			if( str_contains( $value, ',' ) ){
+			if ( str_contains( $value, ',' ) ) {
 				$pages = explode( ',', trim( $value ) );
 			}
 

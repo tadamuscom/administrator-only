@@ -33,7 +33,7 @@ if ( ! class_exists( 'Rest' ) ) {
 		 * @return void
 		 */
 		public function check_for_access(): void {
-			if( $this->is_setting_enabled() ){
+			if ( $this->is_setting_enabled() ) {
 				/**
 				 * Before REST API redirection
 				 *
@@ -43,7 +43,7 @@ if ( ! class_exists( 'Rest' ) ) {
 				 */
 				do_action( 'admon_before_rest_redirection' );
 
-				if( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ){
+				if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
 					wp_redirect( get_option( 'admon_rest_api_link' ) );
 					exit;
 				}
@@ -60,7 +60,7 @@ if ( ! class_exists( 'Rest' ) ) {
 		private function is_setting_enabled(): bool {
 			$setting = get_option( 'admon_rest_api' );
 
-			if( 'true' === $setting ){
+			if ( 'true' === $setting ) {
 				return true;
 			}
 

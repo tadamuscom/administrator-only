@@ -37,7 +37,7 @@ if ( ! defined( 'ADMON_INC' ) ) {
 	define( 'ADMON_INC', ADMON_PATH . '/includes' );
 }
 
-if ( ! defined( 'ADMON_URL' ) ){
+if ( ! defined( 'ADMON_URL' ) ) {
 	define( 'ADMON_URL', plugin_dir_url( __FILE__ ) );
 }
 
@@ -57,7 +57,13 @@ if ( ! defined( 'ADMON_IMG' ) ) {
 	define( 'ADMON_IMG', ADMON_ASSET . '/img' );
 }
 
-class Administrator_Only{
+/**
+ * The main class of the plugin.
+ */
+class Administrator_Only {
+	/**
+	 * Initiate the class
+	 */
 	public function __construct() {
 		require_once ADMON_INC . '/class-loader.php';
 
@@ -72,7 +78,7 @@ class Administrator_Only{
 	 * @return void
 	 */
 	public function deactivate(): void {
-		if ( 'true' === get_option( 'admon_delete_data' ) ){
+		if ( 'true' === get_option( 'admon_delete_data' ) ) {
 			delete_option( 'admon_front_end' );
 			delete_option( 'admon_front_end_link' );
 			delete_option( 'admon_rest_api' );
