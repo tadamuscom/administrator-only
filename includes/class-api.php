@@ -170,7 +170,7 @@ if ( ! class_exists( 'API' ) ) {
 
 				wp_send_json_success(
 					array(
-						'message' => __( 'Settings Saved!', 'licensehub' ),
+						'message' => __( 'Settings Saved!', 'administrator-only' ),
 					)
 				);
 
