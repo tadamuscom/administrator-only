@@ -2,13 +2,13 @@
 Contributors: tadamuscom, sorinmarta
 Tags: administrator only, protect your site, hide content, protect the rest api
 Requires at least: 6.2
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 8.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 Stable tag: 1.0.0
 
-Enable redirects for your front end pages or your REST API routes with a few clicks. 
+Enable redirects for your front end pages or your REST API routes with a few clicks.
 
 == Description ==
 Administrator Only allows you to protect your front end pages or your REST API routes with just a few clicks.
